@@ -1,0 +1,68 @@
+.container {
+  padding: 0 2rem;
+  min-height: 100vh;
+  display: flex;
+
+}
+.textBox {
+  width: 70%;
+  position: relative;
+  z-index: 1;
+}
+.textBox ul{
+  padding: 0;
+}
+.textBox h1 span {
+  font-weight: 500;
+}
+.textBox h1 {
+  font-size: 4.5vw;
+  color: var(--green);
+  margin-bottom: 15px;
+}
+.textBox p {
+  font-size: 2vw;
+  margin-top: 0;
+}
+.lottieCont {
+  position: absolute;
+  right: -10%;
+  bottom: -10%;
+  z-index: 0;
+  width: 35vw;
+}
+.buttons {
+  width: 100%;
+}
+.buttons a {
+  transition: all .2s ease-out;
+  padding: 10px 25px;
+  border-radius: 15px;
+  font-size: 1.3vw;
+  border: 3px solid var(--dark-green);
+  display: inline-block;
+  font-weight: 500;
+}
+.buttons a:first-child {
+  margin-right: 2%;
+  color: var(--dark-green);
+}
+.buttons a:not(:first-child) {
+  background-color: var(--dark-green);
+  color: #f7f7f7;
+}
+.buttons a:hover {
+  transform: translateY(-5px);
+  box-shadow: 5px 4px 9px 2px rgba(144, 172, 157, 0.411)
+}
+.main {
+  padding: 2rem 0;
+  width: 85%;
+  margin: auto;
+  position: relative;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}

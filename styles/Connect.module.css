@@ -1,0 +1,84 @@
+.container {
+    padding: 0 2rem;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.backButton {
+    position: fixed;
+    top: 10px;
+    left: 25px;
+    align-self: flex-start;
+}
+.backButton a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 120px;
+}
+.card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; 
+    height: fit-content;
+    height: -moz-fit-content;
+    width: 40%;
+    background-color: white;
+    border-radius: 15px;
+    padding: 2% 5%;
+    box-shadow: 0 0 20px rgba(147, 168, 157, 0.301);
+}
+.card > p {
+    margin-top: 50px;
+    font-size: 16px;
+    text-align: center;
+}
+.text {
+    text-align: center;
+}
+.text h1 {
+    font-size: 2.5vw;
+    color: var(--green);
+    margin-bottom: 15px;
+}
+
+.text p {
+    font-size: 2vw;
+    margin-top: 0;
+}
+.buttonsCont {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.buttonsCont button {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 65px;
+    width: 175px;
+    border-radius: 15px;
+    font-size: 17px;
+    padding: 0 12px;
+    border: 2px solid var(--black);
+    cursor: pointer;
+    outline: none;
+    transition: all .2s ease-out;
+    background-color: var(--white);
+}
+.buttonsCont button:hover {
+    background-color: white;
+    color: var(--green);
+    border-color: var(--green);
+    
+}
+.buttonsCont button p {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: var(--black);
+}
