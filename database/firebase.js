@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app'
+import { getFirestore } from 'firebase/firestore';
   //initialize firestore
   const config = {
     apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
@@ -9,6 +10,6 @@ import { initializeApp } from 'firebase/app'
     appId: process.env.NEXT_PUBLIC_FB_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_FB_MEASUREMENT
   }
-  const db = initializeApp(config);
-  
+  const data = initializeApp(config)
+  const db = getFirestore(data)
   export default db
