@@ -25,19 +25,19 @@ export default function Header() {
             <li>
                 <InnerLink path="/how-does-it-work" text="How does it work?"/>
             </li>
-              <li>
+              <li className="user">
               {!isLogged ? (
-                <button onClick={() => signIn()}>
+                <button onClick={() => signIn()} className="login">
                   Connect
                 </button>
               ) : (
                 <>
-                <button onClick={() => signOut({callbackUrl: `${window.location.origin}`})}>
-                  Diconnect
+                <button className="disconnect" onClick={() => signOut({callbackUrl: `${window.location.origin}`})}>
+                   Diconnect
                 </button>
                 <Link href="/profile">
                   <a>
-                    <Image width="39px" src='/images/user.png' alt='little baker'/>
+                    <Image width="50px" src={!!session.user.image ? session.user.image : '/images/anonymous.webp' } alt='profile-image' class="profile-image"/>
                   </a>
                 </Link>
                 </>
