@@ -23,7 +23,7 @@ export default function profile({supply, shoppingLists}) {
               <div className={styles.cardCont}>
                 <div className={styles.cardModule}>
                   <Card>
-                      <LastShoppingLists lists={shoppingLists.lists}/>
+                      <LastShoppingLists lists={shoppingLists?.lists}/>
                   </Card>
                 </div>
                 <div className={styles.cardModule}>
@@ -58,8 +58,8 @@ export async function getServerSideProps(context) {
     return { redirect: { destination: "/auth/connect" } }
   }
   //initilize variables
-  let supply
-  let shoppingLists
+
+  async function scanData(){
   //get the collection ref
   const supplyCollection = await collection(db, '/supply')
   const listsCollection = await collection(db, '/shopping-list')
@@ -69,21 +69,25 @@ export async function getServerSideProps(context) {
   //snap the data
   const querySnapshot = await getDocs(supplyQuery)
   const listSnapshot = await getDocs(listsQuery)
-  querySnapshot.forEach((doc) => {
-    supply = doc.data()
-  })
-  listSnapshot.forEach((doc) => {
-    shoppingLists = doc.data()
-  })
-  //if data dosent exists - create new document
-  if(!supply){
-    const supplyRef = await addDoc(supplyCollection, {owner: session.user.email})
-    supply = supplyRef.data()
+    if(querySnapshot.size > 0 && listSnapshot.size > 0) {
+    let supply, shoppingLists
+    querySnapshot.forEach((doc) => {
+      supply = doc.data()
+    })
+    listSnapshot.forEach((doc) => {
+      shoppingLists = doc.data()
+    })
+    return {props: {supply, shoppingLists} }
+    }else {
+      await setNewDataUser(supplyCollection, listsCollection)
+    }
   }
-  if(!shoppingLists){
-    const listRef = await addDoc(listsCollection, {owner: session.user.email})
-    shoppingLists = listRef.data()
+  await scanData()
+  //setting new data for new user
+  async function setNewDataUser(supplyCollection, listsCollection) {
+    await addDoc(supplyCollection, {owner: session.user.email})
+    await addDoc(listsCollection, {owner: session.user.email})
+    await scanData()
   }
-  return {props: {supply, shoppingLists} }
-
+  return {props: {}}
 }
