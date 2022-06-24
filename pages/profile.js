@@ -8,8 +8,9 @@ import Card from '../components/shared/Card'
 import LastShoppingLists from '../components/profile/LastShoppingLists'
 import styles from '../styles/Profile.module.css'
 import AddButton from '../components/profile/AddButton'
+import Search from '../components/profile/Search'
 
-export default function profile({supply, shoppingLists}) {    
+export default function profile({supply, shoppingList}) { 
   return (
         <>
           <Head>
@@ -23,12 +24,12 @@ export default function profile({supply, shoppingLists}) {
               <div className={styles.cardCont}>
                 <div className={styles.cardModule}>
                   <Card>
-                      <LastShoppingLists lists={shoppingLists?.lists}/>
+                      <LastShoppingLists lists={shoppingList?.lists}/>
                   </Card>
                 </div>
                 <div className={styles.cardModule}>
                   <Card>
-                    search
+                    <Search />
                   </Card>
                   <AddButton />
                 </div>
@@ -57,37 +58,39 @@ export async function getServerSideProps(context) {
   if(!session) {
     return { redirect: { destination: "/auth/connect" } }
   }
-  //initilize variables
-
-  async function scanData(){
   //get the collection ref
   const supplyCollection = await collection(db, '/supply')
   const listsCollection = await collection(db, '/shopping-list')
   //query for the user's data
   const supplyQuery = query(supplyCollection, where("owner", "==", session.user.email))
   const listsQuery = query(listsCollection, where("owner", "==", session.user.email))
-  //snap the data
-  const querySnapshot = await getDocs(supplyQuery)
-  const listSnapshot = await getDocs(listsQuery)
-    if(querySnapshot.size > 0 && listSnapshot.size > 0) {
-    let supply, shoppingLists
+  //variables to save the data
+  let querySnapshot, listSnapshot
+  //repeated function to update the data if new one created
+  async function getAllDocs(){
+  querySnapshot = await getDocs(supplyQuery)
+  listSnapshot = await getDocs(listsQuery)
+  }
+  await getAllDocs()
+
+  if(querySnapshot.empty && listSnapshot.empty){
+    await addDoc(supplyCollection, {owner: session.user.email})
+    await addDoc(listsCollection, {owner: session.user.email})
+    await getAllDocs()
+  }
+
+  function setData() {
+    let supply, shoppingList
+    listSnapshot.forEach((doc) => {
+      shoppingList = doc.data()
+    })
     querySnapshot.forEach((doc) => {
       supply = doc.data()
     })
-    listSnapshot.forEach((doc) => {
-      shoppingLists = doc.data()
-    })
-    return {props: {supply, shoppingLists} }
-    }else {
-      await setNewDataUser(supplyCollection, listsCollection)
-    }
+    return {supply,shoppingList}
   }
-  await scanData()
-  //setting new data for new user
-  async function setNewDataUser(supplyCollection, listsCollection) {
-    await addDoc(supplyCollection, {owner: session.user.email})
-    await addDoc(listsCollection, {owner: session.user.email})
-    await scanData()
-  }
-  return {props: {}}
+
+  const data = await setData() 
+  
+  return {props: {...data}}
 }
