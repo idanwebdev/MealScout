@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const initialState = {user: null}
-export const userSlicer = createSlice({
-  name: 'user',
+
+export const shoppingListSlicer = createSlice({
+  name: 'shoppingList',
   initialState,
   reducers: {
     setUser: (state, action) => {
@@ -11,6 +12,6 @@ export const userSlicer = createSlice({
   },
 })
 
-export const { setUser } = userSlicer.actions
 
-export default userSlicer.reducer
+export const { shoppingList } = shoppingList.actions
+export default shoppingList.reducer

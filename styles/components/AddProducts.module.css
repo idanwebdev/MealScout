@@ -1,0 +1,71 @@
+.wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: #a1a1a167;
+    backdrop-filter: blur(5px);
+    height: 100vh;
+    width: 100vw;
+    box-shadow: var(--box-shadow);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.container {
+    height: 85vh;
+    width: 35vmax;
+    background-color: white;
+    box-sizing: var(--box-shadow);
+    border-radius: 10px;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.closeBtn {
+    font-weight: 600;
+    font-size: 25px;
+    align-self: flex-end;
+    cursor: pointer;
+}
+.container h2, .container p {
+    max-width: 550px;
+}
+.bottomBox {
+    height: 100%;
+    width: 100%;
+    margin-top: 35px;
+}
+.btnBox {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+.btnBox button {
+    font-size: 1.1vw;
+    background-color: #ECECEC;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    transition: all .2s ease-out;
+    padding: 5px 0;
+}
+.btnBox .active {
+    box-shadow: var(--box-shadow);
+    background-color: #dfdfdf ;
+}
+.btnBox button > * {
+    pointer-events: none;
+}
+.btnBox button:hover {
+    box-shadow: var(--box-shadow);
+}
+.btnBox button p {
+    margin: 3px 0 3px;
+}

@@ -1,0 +1,1 @@
+export const categories = ['produce', 'bakery', 'sea', 'dairy', 'spices', 'meat']

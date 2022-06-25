@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import styles from '../../styles/components/AddButton.module.css'
 import Image from '../shared/Image'
-export default function AddButton() {
+export default function AddButton(props) {
   const [isPopup, setIsPoup] = useState(false)
   return (
   <div className={styles.wrapper} onMouseEnter={(() => setIsPoup(true))} onMouseLeave={(() => setIsPoup(false))}>
@@ -11,9 +11,11 @@ export default function AddButton() {
     </div>
     { isPopup && (
     <div className={styles.popup}>
-      <Link href={'/profile'} >
-        <a className={styles.link}>Add food supply</a>
-      </Link>
+      
+      <a className={styles.link} role="button" onClick={() => props.toggle()}>
+        Add food supply
+      </a>
+      
       <Link href={'/profile'} className={styles.link}>
         <a className={styles.link}>Add a shopping list</a>
       </Link>

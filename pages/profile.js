@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import Header from '../components/shared/Header'
 import { getSession } from "next-auth/react"
@@ -9,8 +9,14 @@ import LastShoppingLists from '../components/profile/LastShoppingLists'
 import styles from '../styles/Profile.module.css'
 import AddButton from '../components/profile/AddButton'
 import Search from '../components/profile/Search'
+import AddProducts from '../components/shared/AddProducts'
 
-export default function profile({supply, shoppingList}) { 
+export default function profile({supply, shoppingList, listId, supplyId}) { 
+  const [isAddProductVisibile, setIsAddProductVisibile] = useState (false)
+  function setApPopup() {
+    console.log("fired")
+    setIsAddProductVisibile(prevState => !prevState)
+  }
   return (
         <>
           <Head>
@@ -29,9 +35,9 @@ export default function profile({supply, shoppingList}) {
                 </div>
                 <div className={styles.cardModule}>
                   <Card>
-                    <Search />
+                    <Search supply={supply?.products} id={supplyId}/>
                   </Card>
-                  <AddButton />
+                  <AddButton toggle={setApPopup}/>
                 </div>
                 <div className={styles.cardModule}>
                   <Card>   
@@ -45,6 +51,9 @@ export default function profile({supply, shoppingList}) {
                 </div>
               </div>
             </div>
+            {isAddProductVisibile && (
+              <AddProducts toggle={setApPopup}/>
+            )}
           </div>
         </>
     )
@@ -65,11 +74,11 @@ export async function getServerSideProps(context) {
   const supplyQuery = query(supplyCollection, where("owner", "==", session.user.email))
   const listsQuery = query(listsCollection, where("owner", "==", session.user.email))
   //variables to save the data
-  let querySnapshot, listSnapshot
+  let querySnapshot, listSnapshot, supplyId, listsId
   //repeated function to update the data if new one created
   async function getAllDocs(){
   querySnapshot = await getDocs(supplyQuery)
-  listSnapshot = await getDocs(listsQuery)
+  listSnapshot = await getDocs(listsQuery) 
   }
   await getAllDocs()
 
@@ -83,14 +92,16 @@ export async function getServerSideProps(context) {
     let supply, shoppingList
     listSnapshot.forEach((doc) => {
       shoppingList = doc.data()
+      listsId = doc.id
     })
     querySnapshot.forEach((doc) => {
       supply = doc.data()
+      supplyId = doc.id
     })
     return {supply,shoppingList}
   }
 
   const data = await setData() 
   
-  return {props: {...data}}
+  return {props: {...data, listsId, supplyId}}
 }
