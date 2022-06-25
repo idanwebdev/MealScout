@@ -11,12 +11,13 @@ import AddButton from '../components/profile/AddButton'
 import Search from '../components/profile/Search'
 import AddProducts from '../components/shared/AddProducts'
 
+
 export default function profile({supply, shoppingList, listId, supplyId}) { 
   const [isAddProductVisibile, setIsAddProductVisibile] = useState (false)
   function setApPopup() {
-    console.log("fired")
     setIsAddProductVisibile(prevState => !prevState)
   }
+
   return (
         <>
           <Head>
@@ -52,7 +53,7 @@ export default function profile({supply, shoppingList, listId, supplyId}) {
               </div>
             </div>
             {isAddProductVisibile && (
-              <AddProducts toggle={setApPopup}/>
+              <AddProducts toggle={setApPopup} supplyDocId={supplyId}/>
             )}
           </div>
         </>

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import userSlicer from './userSlicer'
+import localSupplySlicer from './localSupplySlicer'
 export const store = configureStore({
   reducer: {
-    user: userSlicer
+    userSupply: localSupplySlicer
   },
 })
