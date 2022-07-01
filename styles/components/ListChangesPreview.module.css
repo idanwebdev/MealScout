@@ -6,9 +6,25 @@
 }
 .table td {
     border-right: 1px solid rgb(209, 209, 209);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+.table td:hover {
+    background-color: rgb(226, 226, 226);
+    border-radius: 3px 15px 15px 3px;
+}
+.table td span {
+    font-size: 18px;
 }
 .table tr {
     text-align: left;
+    display: grid;
+    grid-template-columns: repeat(2, 49%);
+    gap: 1%;
 }
 .table tr th {
     padding-top: 10px;
@@ -39,3 +55,5 @@
     border-color: var(--white);
     box-shadow: var(--box-shadow);
 }
+
+  

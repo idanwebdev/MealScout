@@ -6,9 +6,12 @@ import ListChangesPreview from '../profile/ListChangesPreview'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItems } from '../../redux/localSupplySlicer'
 import checkDoubles from '../../helpers/checkDoubles'
+import FadeIn from '../../helpers/animations/FadeIn'
+import SlideDown from '../../helpers/animations/slideDown'
 
 export default function AddProducts(props) {
     const [activeCat, setActiveCat] = useState('')
+    const [loading, setLoading] = useState(false)
     const [value, setValue] = useState('')
     const [authComplete , setAutoComplete] = useState([])
     const [error, setError] = useState('')
@@ -21,41 +24,43 @@ export default function AddProducts(props) {
   
     useEffect(() => {
       if(value != '') {
-        axios.get(`https://api.spoonacular.com/food/ingredients/autocomplete?query=${value}&apiKey=4260086b1ef947b7badef2464476bdaa&number=4`)
-        .then((result) => {
-          setAutoComplete(result.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+          setLoading(true)
+          axios.get(`/api/data/${value}`)
+          .then((result) => {
+            setAutoComplete(result.data)
+            setLoading(false)
+          })
+          .catch((err) => {
+            setLoading(false)
+            console.log(err)
+          })
       }
     }, [value])
-  function activeCategory(e) {
-    setActiveCat(e.target.dataset.id)
-  }
-
-  function handleInputChange(e) {
-    setValue(inputRef.current.value)
-  }
-  function handleOptionPick(e) {
-    setValue(e.target.value)
-  }
-  async function handleSubmit(e) {
-    e.preventDefault() 
-    const checkLocal = await checkDoubles(Object.values(userList), value)
-
-    const checkDB = await checkDoubles(Object.values(userList), value)
-    
-    if ( !checkLocal && !checkDB){
-    dispatch(addItems({category: activeCat, ingredient: value}))
-    }else {
-      setError('You already own this ingredient')
-      setTimeout(() => {
-        setError('')
-      }, [2000])
+    function activeCategory(e) {
+      setActiveCat(e.target.dataset.id)
     }
-    setValue('')
-  }
+    function handleInputChange(e) {      
+      setValue(inputRef.current.value) 
+    }
+    function handleOptionPick(e) {
+      setValue('')
+      handleSubmit(e)
+    }
+    async function handleSubmit(e) {
+      e.preventDefault()
+      const refferedValue = e.target.value ? e.target.value : value 
+      const checkLocal = await checkDoubles(Object.values(userList), refferedValue)
+      const checkDB = await checkDoubles(Object.values(userList), refferedValue)   
+      if ( !checkLocal && !checkDB){
+      dispatch(addItems({category: activeCat, ingredient: refferedValue}))
+      }else {
+        setError('You already own this ingredient')
+        setTimeout(() => {
+          setError('')
+        }, [2000])
+      }
+      setValue('')
+    }
   return (
     <div className={styles.wrapper}>
        <div className={styles.container} ref={containerRef}>
@@ -73,17 +78,16 @@ export default function AddProducts(props) {
           <h2>Add ingredients</h2>
         )}
         <div className={styles.bottomBox}>
-            <div className={styles.btnBox}>
+            <div className="btnBox">
                 {categories.map((item, key) => (
-                    <button key={key} className={activeCat === item ? styles.active : null} onClick={activeCategory} ref={categoryRef} data-id={item}>
+                    <button key={key} className={activeCat === item ? 'active' : null} onClick={activeCategory} ref={categoryRef} data-id={item}>
                       <img src={`/images/icons/${item}.png`} width="45px" alt="food icon"/>
                       <p>{item.charAt(0).toUpperCase() + item.slice(1)}</p>
                     </button>
                 ))}
             </div>
+            <SlideDown in={activeCat !== ''}>
             <div className={styles.rightBox}>
-              {activeCat !== '' && (
-                <>
                   <h3>Add products to {activeCat} supply</h3>
                   <form className={styles.form} onSubmit={handleSubmit}>
                     <div className={styles.searchCont}>
@@ -96,35 +100,38 @@ export default function AddProducts(props) {
                         <input className={styles.submit} type={'submit'} disabled={value == '' ? true : false}/>
                       </label>
                     </div>
-                    <div className={styles.optionsCont}>
-                      {authComplete.length > 0 && activeCat != '' && value != '' && (
-                      <>
+                    {!loading ? (
+                      <FadeIn in={authComplete?.length > 0 && activeCat != '' && value != ''} timeout={500}>
+                      <div className={styles.optionsCont}>
                         <p>Suggestions:</p>
-                        {authComplete.map((item, key) => (
-                        <label key={key}>
-                          {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
-                          <input name="option" type="radio" className={styles.singleOption} value={item.name} onChange={handleOptionPick}/>
-                        </label>
-                        ))}                    
-                      </>          
-                      )}
-                    </div>
+                          {authComplete?.map((item, key) => (
+                          <label key={key}>
+                            {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                            <input name="option" type="radio" className={styles.singleOption} value={item.name} onChange={handleOptionPick} tabIndex={key}/>
+                          </label>
+                        ))} 
+                      </div>
+                    </FadeIn> 
+                    ) : (
+                    <FadeIn in={activeCat != '' && value != ''} timeout={500}>
+                      <img style={{float: 'left', margin: '10% 0'}}className='loader' width={'35px'} src="images/icons/loader.svg" alt="loader" />
+                    </FadeIn>
+                    )}                                                   
                   </form>
-                  {error.length > 0 && (
+                  <FadeIn in={error.length > 0}>
                     <div className={styles.error}>
                       <p>{error}</p>
                     </div>
-                  )}
-                </>
-              )}
+                  </FadeIn>
             </div>
+            </SlideDown>
         </div>
         </div>
-        {userList && Object.keys(userList).length !== 0 && (
-        <div className={styles.listPreviewCont}> 
-            <ListChangesPreview list={userList} supplyDocId={props.supplyDocId}/>
-        </div>
-        )}
+        <FadeIn in={userList && Object.keys(userList).length !== 0}>
+          <div className={styles.listPreviewCont}> 
+              <ListChangesPreview list={userList} supplyDocId={props.supplyDocId} toggle={props.toggle}/>
+          </div>
+        </FadeIn>
     </div>
   )
 }

@@ -1,0 +1,38 @@
+.wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background-color: #8b8b8b83;
+    backdrop-filter: blur(5px);
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    z-index: 1;
+}
+.container {
+    width: 35vmax;
+    background-color: white;
+    box-sizing: var(--box-shadow);
+    border-radius: 10px;
+    padding: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all .2s ease-out;
+    position: relative;
+}
+.closeBtn {
+    font-weight: 600;
+    font-size: 25px;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    cursor: pointer;
+}

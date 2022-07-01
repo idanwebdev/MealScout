@@ -1,0 +1,35 @@
+/* Transitions */
+/*Fade in */
+.fadeIn {
+    opacity: 0;
+}
+.fadedIn {
+  opacity: 1;
+  transition: opacity 300ms, transform 300ms;
+}
+.fadeOut {
+  opacity: 1;
+}
+.fadedOut {
+  opacity: 0;
+  transition: opacity 300ms, transform 300ms;
+}
+/*Slide Down */
+.slideDown {
+  overflow: hidden;
+  max-height: 0;
+}
+.slidDown {
+  overflow: hidden;
+  max-height: 50vh;
+  transition: max-height 600ms;
+}
+.slideOut {
+  overflow: hidden;
+  max-height: 50vh;
+}
+.slidOut {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 600ms;
+}

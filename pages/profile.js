@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from '../components/shared/Header'
 import { getSession } from "next-auth/react"
@@ -10,22 +10,33 @@ import styles from '../styles/Profile.module.css'
 import AddButton from '../components/profile/AddButton'
 import Search from '../components/profile/Search'
 import AddProducts from '../components/shared/AddProducts'
+import FadeIn from '../helpers/animations/FadeIn'
+import { useDispatch } from 'react-redux'
+import { setList } from '../redux/realSupplySlicer'
+import Message from '../components/shared/Message'
+import Supply from '../components/profile/Supply'
 
 
 export default function profile({supply, shoppingList, listId, supplyId}) { 
-  const [isAddProductVisibile, setIsAddProductVisibile] = useState (false)
+  const [isAddProductVisibile, setIsAddProductVisibile] = useState(false)
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(setList(supply))
+  }, [])
   function setApPopup() {
     setIsAddProductVisibile(prevState => !prevState)
   }
-
   return (
         <>
           <Head>
             <title>MealScout - Connect</title>
             <meta name="description" content="MealScout Aims to reduce food waste globally, by composing awesome recipes based on the user's home food supply." />
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
             <link rel="icon" href="/favicon.ico" />
           </Head>
           <Header/>
+          <Message />
           <div className={styles.pageWrapper}>
             <div className={styles.pageCont}>
               <div className={styles.cardCont}>
@@ -42,7 +53,7 @@ export default function profile({supply, shoppingList, listId, supplyId}) {
                 </div>
                 <div className={styles.cardModule}>
                   <Card>   
-                    supply
+                    <Supply list={supply}/>
                   </Card>
                 </div>
                 <div className={styles.cardModule}>
@@ -52,9 +63,9 @@ export default function profile({supply, shoppingList, listId, supplyId}) {
                 </div>
               </div>
             </div>
-            {isAddProductVisibile && (
-              <AddProducts toggle={setApPopup} supplyDocId={supplyId}/>
-            )}
+            <FadeIn in={isAddProductVisibile} timeout={200}>
+                <AddProducts toggle={setApPopup} supplyDocId={supplyId}/>  
+            </FadeIn>                  
           </div>
         </>
     )

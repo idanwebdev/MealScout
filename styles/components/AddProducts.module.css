@@ -9,8 +9,6 @@
     backdrop-filter: blur(5px);
     height: 100vh;
     width: 100vw;
-    box-shadow: var(--box-shadow);
-    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -18,6 +16,8 @@
 }
 .container {
     width: 35vmax;
+    /*min-height: 79vh;*/
+    max-height: 100vh;
     background-color: white;
     box-sizing: var(--box-shadow);
     border-radius: 10px;
@@ -42,39 +42,12 @@
     width: 100%;
     margin-top: 35px;
 }
-.btnBox {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
-}
 .bottomBox h3 {
     margin-bottom: 0;
     margin-top: 40px;
     text-align: left;
 }
-.btnBox button {
-    font-size: 1.1vw;
-    background-color: #ECECEC;
-    border-radius: 10px;
-    outline: none;
-    border: none;
-    transition: all .2s ease-out;
-    padding: 5px 0;
-    font-family: inherit;
-}
-.btnBox .active {
-    box-shadow: var(--box-shadow);
-    background-color: #dfdfdf ;
-}
-.btnBox button > * {
-    pointer-events: none;
-}
-.btnBox button:hover {
-    box-shadow: var(--box-shadow);
-}
-.btnBox button p {
-    margin: 3px 0 3px;
-}
+
 .form {
     margin-top: 5px;
 }
@@ -192,6 +165,7 @@
     background-color: rgb(223, 35, 72);
     padding: 5px 10px;
     width: 100%;
+    margin-top: 15px;
 }
 .error p {
     color: white;

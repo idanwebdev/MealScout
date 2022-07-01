@@ -40,11 +40,25 @@
     align-items: center;
 }
 .cardModule:nth-child(3) {
-    grid-row: 2 / 9;
+    grid-row: 2 / 9;    
 }
 .cardModule:nth-child(4) {
     grid-row: 5 / 9;
 }
 
+.fadeIn {
+    opacity: 0;
+}
+.fadedIn {
+    opacity: 1;
+    transition: opacity 300ms, transform 300ms;
+}
+.fadeOut {
+    opacity: 1;
+}
+.fadedOut {
+    opacity: 0;
+    transition: opacity 300ms, transform 300ms;
+}
 
 
