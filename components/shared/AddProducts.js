@@ -19,9 +19,8 @@ export default function AddProducts(props) {
     const categoryRef = useRef()
     const inputRef = useRef()
     const dispatch = useDispatch()
-    const userList = useSelector(state => state.userSupply)
+    const { userSupply } = useSelector(state => state)
 
-  
     useEffect(() => {
       if(value != '') {
           setLoading(true)
@@ -48,9 +47,15 @@ export default function AddProducts(props) {
     }
     async function handleSubmit(e) {
       e.preventDefault()
+      let checkDB = false
+      let checkLocal = false
       const refferedValue = e.target.value ? e.target.value : value 
-      const checkLocal = await checkDoubles(Object.values(userList), refferedValue)
-      const checkDB = await checkDoubles(Object.values(userList), refferedValue)   
+      if(userSupply){
+      checkLocal = await checkDoubles(Object.values(userSupply), refferedValue)
+      }
+      if(props.data) {
+      checkDB = await checkDoubles(Object.values(props.data), refferedValue)
+      }   
       if ( !checkLocal && !checkDB){
       dispatch(addItems({category: activeCat, ingredient: refferedValue}))
       }else {
@@ -127,9 +132,9 @@ export default function AddProducts(props) {
             </SlideDown>
         </div>
         </div>
-        <FadeIn in={userList && Object.keys(userList).length !== 0}>
+        <FadeIn in={userSupply && Object.keys(userSupply).length !== 0}>
           <div className={styles.listPreviewCont}> 
-              <ListChangesPreview list={userList} supplyDocId={props.supplyDocId} toggle={props.toggle}/>
+              <ListChangesPreview list={userSupply} supplyDocId={props.supplyDocId} toggle={props.toggle}/>
           </div>
         </FadeIn>
     </div>

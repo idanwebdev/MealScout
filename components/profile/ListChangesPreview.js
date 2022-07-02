@@ -21,7 +21,7 @@ export default function ListChangesPreview(props) {
   const unsub = onSnapshot(ref, (doc) => {
       setData(doc.data());
   })
-  return () => unsub
+  return () => unsub()
   }, [])
   useEffect(() => {
     if(clicked) {
@@ -29,7 +29,6 @@ export default function ListChangesPreview(props) {
     }
     return setClicked('')
   }, [clicked])
-
   async function handleClick() {
     const newState = await updateStateObject(data, userSupply) 
     try {

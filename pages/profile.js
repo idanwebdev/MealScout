@@ -64,7 +64,7 @@ export default function profile({supply, shoppingList, listId, supplyId}) {
               </div>
             </div>
             <FadeIn in={isAddProductVisibile} timeout={200}>
-                <AddProducts toggle={setApPopup} supplyDocId={supplyId}/>  
+                <AddProducts toggle={setApPopup} supplyDocId={supplyId} data={supply.products}/>  
             </FadeIn>                  
           </div>
         </>
